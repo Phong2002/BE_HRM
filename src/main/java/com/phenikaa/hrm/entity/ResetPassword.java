@@ -5,21 +5,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Getter
 @Setter
 @Entity
-@Table(name = "User")
-public class ResetPassword {
+@Table(name = "`resetPassword_Token`")
+public class ResetPassword implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id", nullable = false)
     private Integer id;
 
-    @Column(name = "Token")
+    @Column(name = "token")
     private String token;
 
-    @Column(name = "`user_id`")
-    private Integer user_id;
+    @ManyToOne()
+    @JoinColumn(name = "`user_id`")
+    private User user;
 }

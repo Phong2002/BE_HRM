@@ -4,8 +4,10 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
@@ -13,9 +15,10 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "User")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "`user_id`", nullable = false)
     public int id;
     @Column(name ="`firstname`" ,nullable = false)
@@ -23,13 +26,16 @@ public class User {
     @Column(name ="`lastname`" ,nullable = false)
     public String lastname;
 
+    @Formula(" concat(firstname, ' ', lastname) ")
+    private String fullName;
+
     @Column(name = "gender")
     private String gender;
 
     @Column(name = "`dateOfBirth`")
     @Temporal(TemporalType.DATE)
-    @CreationTimestamp
-    private Date foundingDate;
+
+    private Date dateOfBirth;
 
     @Column(name = "address")
     private String address;
@@ -43,7 +49,7 @@ public class User {
 
     @Column(name = "`workStartDate`")
     @Temporal(TemporalType.DATE)
-    @CreationTimestamp
+
     private Date workStartDate;
 
     @Column(name = "`numberPhone`")
@@ -59,9 +65,9 @@ public class User {
     @JoinColumn(name = "`department_id`")
     private Department department;
 
+    @Column(name = "Classify")
+    private String classify;
 
-
-
-
-
+    @Column(name = "role")
+    private String role;
 }
